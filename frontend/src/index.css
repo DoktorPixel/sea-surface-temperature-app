@@ -1,3 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -5,5 +10,14 @@ main {
   align-items: center;
   min-height: 98vh;
   gap: 20px;
+}
+
+.map-wrapper {
+  padding: 40px;
+}
+
+.map-image {
+  transform: rotate(180deg) scale(-1, 1);
+  max-width: 98vw;
 }
 

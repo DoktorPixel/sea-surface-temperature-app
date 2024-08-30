@@ -1,4 +1,3 @@
-// frontend/src/App.tsx
 import React, { useState } from "react";
 
 const App: React.FC = () => {
@@ -9,7 +8,6 @@ const App: React.FC = () => {
     const file = e.target.files?.[0] || null;
     setSelectedFile(file);
   };
-
   const handleSubmit = async () => {
     if (!selectedFile) {
       alert("Please select a file.");
@@ -31,34 +29,15 @@ const App: React.FC = () => {
 
       const result = await response.json();
       if (result.imageUrl) {
-        console.log(result.imageUrl);
-        setImageUrl(result.imageUrl);
+        const fullImageUrl = `http://localhost:3001${result.imageUrl}`;
+        console.log(fullImageUrl);
+        setImageUrl(fullImageUrl);
       }
     } catch (error) {
       console.error("Loading error:", error);
       alert("An error occurred while uploading the file.");
     }
   };
-
-  // const handleSubmit = async () => {
-  //   if (!selectedFile) {
-  //     alert("Please select a file.");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("file", selectedFile);
-
-  //   const response = await fetch("/upload", {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-
-  //   const result = await response.json();
-  //   if (result.imageUrl) {
-  //     setImageUrl(result.imageUrl);
-  //   }
-  // };
 
   return (
     <main>
@@ -67,9 +46,13 @@ const App: React.FC = () => {
       <button onClick={handleSubmit}>Download and generate</button>
 
       {imageUrl && (
-        <div>
+        <div className="map-wrapper">
           <h2>Generated map:</h2>
-          <img src={imageUrl} alt="Sea Surface Temperature Map" />
+          <img
+            src={imageUrl}
+            alt="Sea Surface Temperature Map"
+            className="map-image"
+          />
         </div>
       )}
     </main>
