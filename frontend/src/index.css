@@ -13,11 +13,18 @@ main {
 }
 
 .map-wrapper {
-  padding: 40px;
+  margin: 40px;
+  text-align: center;
 }
 
 .map-image {
   transform: rotate(180deg) scale(-1, 1);
   max-width: 98vw;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
 }
 

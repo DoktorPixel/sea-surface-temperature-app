@@ -1,19 +1,34 @@
 import React, { useState } from "react";
+import {
+  Button,
+  Container,
+  Typography,
+  TextField,
+  CircularProgress,
+  FormHelperText,
+} from "@mui/material";
 
 const App: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setSelectedFile(file);
+    if (file) {
+      setError(null);
+    }
   };
+
   const handleSubmit = async () => {
     if (!selectedFile) {
-      alert("Please select a file.");
+      setError("Please select a file.");
       return;
     }
 
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", selectedFile);
 
@@ -32,22 +47,52 @@ const App: React.FC = () => {
         const fullImageUrl = `http://localhost:3001${result.imageUrl}`;
         console.log(fullImageUrl);
         setImageUrl(fullImageUrl);
+        setError(null);
       }
     } catch (error) {
       console.error("Loading error:", error);
-      alert("An error occurred while uploading the file.");
+      setError("An error occurred while uploading the file.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <main>
-      <h1>Sea surface temperature display</h1>
-      <input type="file" onChange={handleFileUpload} />
-      <button onClick={handleSubmit}>Download and generate</button>
+    <main className="main-container">
+      <Container maxWidth="xs">
+        <Typography variant="h4" gutterBottom>
+          Sea Surface Temperature Display
+        </Typography>
+        <TextField
+          type="file"
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          onChange={handleFileUpload}
+        />
+        <FormHelperText style={{ color: "gray", textAlign: "center" }}>
+          {selectedFile
+            ? `Selected file: ${selectedFile.name}`
+            : "No file selected"}
+        </FormHelperText>
 
+        {error && <div className="error">{error}</div>}
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} /> : "Download and Generate"}
+        </Button>
+      </Container>
       {imageUrl && (
         <div className="map-wrapper">
-          <h2>Generated map:</h2>
+          <Typography variant="h6" gutterBottom>
+            Generated Map:
+          </Typography>
           <img
             src={imageUrl}
             alt="Sea Surface Temperature Map"
