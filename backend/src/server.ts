@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import JSZip from "jszip";
 import multer from "multer";
+import { getColorForTemperature } from "./utils/colorUtils";
 
 const app = express();
 const port = 3001;
@@ -109,92 +110,6 @@ app.post(
     }
   }
 );
-
-function interpolateColor(
-  color1: { r: number; g: number; b: number },
-  color2: { r: number; g: number; b: number },
-  factor: number
-): { r: number; g: number; b: number } {
-  const result = {
-    r: Math.round(color1.r + (color2.r - color1.r) * factor),
-    g: Math.round(color1.g + (color2.g - color1.g) * factor),
-    b: Math.round(color1.b + (color2.b - color1.b) * factor),
-  };
-  return result;
-}
-
-function getColorForTemperature(temp: number): {
-  r: number;
-  g: number;
-  b: number;
-} {
-  if (temp === 255) {
-    return { r: 0, g: 0, b: 0 };
-  }
-
-  const tempRanges = [
-    {
-      min: 0,
-      max: 30,
-      startColor: { r: 0, g: 0, b: 139 },
-      endColor: { r: 0, g: 0, b: 255 },
-    },
-    {
-      min: 30,
-      max: 40,
-      startColor: { r: 0, g: 0, b: 255 },
-      endColor: { r: 173, g: 216, b: 230 },
-    },
-    {
-      min: 40,
-      max: 50,
-      startColor: { r: 173, g: 216, b: 230 },
-      endColor: { r: 0, g: 255, b: 0 },
-    },
-    {
-      min: 50,
-      max: 60,
-      startColor: { r: 0, g: 255, b: 0 },
-      endColor: { r: 173, g: 255, b: 47 },
-    },
-    {
-      min: 60,
-      max: 70,
-      startColor: { r: 173, g: 255, b: 47 },
-      endColor: { r: 255, g: 255, b: 0 },
-    },
-    {
-      min: 70,
-      max: 80,
-      startColor: { r: 255, g: 255, b: 0 },
-      endColor: { r: 255, g: 165, b: 0 },
-    },
-    {
-      min: 80,
-      max: 90,
-      startColor: { r: 255, g: 165, b: 0 },
-      endColor: { r: 255, g: 0, b: 0 },
-    },
-    {
-      min: 90,
-      max: 100,
-      startColor: { r: 255, g: 0, b: 0 },
-      endColor: { r: 255, g: 0, b: 0 },
-    },
-  ];
-
-  for (const range of tempRanges) {
-    if (temp >= range.min && temp < range.max) {
-      const rangeSpan = range.max - range.min;
-      const normalizedTemp = (temp - range.min) / rangeSpan;
-      return interpolateColor(range.startColor, range.endColor, normalizedTemp);
-    }
-  }
-
-  if (temp >= 100) return { r: 255, g: 0, b: 0 }; // red
-  if (temp < 0) return { r: 0, g: 0, b: 139 }; // darkblue
-  return { r: 0, g: 0, b: 0 };
-}
 
 app.listen(port, () => {
   console.log(`The server is running on http://localhost:${port}`);
