@@ -46,7 +46,7 @@ app.post(
       const mapPath = path.join(__dirname, "../public/empty-map-rotate.jpg");
       const mapImage = await loadImage(mapPath);
 
-      const SCALE = 0.1; // 10%
+      const SCALE = 0.1;
       const canvas = createCanvas(
         BINARY_DIMENSION_X * SCALE,
         BINARY_DIMENSION_Y * SCALE

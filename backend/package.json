@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require ts-node/register 'src/**/*.spec.ts'",
+    "test": "mocha --require ts-node/register 'src/**/*.test.ts'",
     "start": "ts-node src/server.ts",
     "dev": "nodemon --exec ts-node src/server.ts"
   },
@@ -31,3 +31,4 @@
     "typescript": "^5.5.4"
   }
 }
+

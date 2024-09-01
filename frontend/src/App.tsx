@@ -45,7 +45,6 @@ const App: React.FC = () => {
       const result = await response.json();
       if (result.imageUrl) {
         const fullImageUrl = `http://localhost:3001${result.imageUrl}`;
-        console.log(fullImageUrl);
         setImageUrl(fullImageUrl);
         setError(null);
       }
@@ -69,8 +68,9 @@ const App: React.FC = () => {
           variant="outlined"
           margin="normal"
           onChange={handleFileUpload}
+          aria-label="file input"
         />
-        <FormHelperText style={{ color: "gray", textAlign: "center" }}>
+        <FormHelperText sx={{ textAlign: "center" }}>
           {selectedFile
             ? `Selected file: ${selectedFile.name}`
             : "No file selected"}
