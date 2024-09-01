@@ -1,6 +1,7 @@
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import App from "./App";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 
 describe("App Component", () => {
   it("renders the title", () => {
